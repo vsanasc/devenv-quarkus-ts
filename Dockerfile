@@ -20,17 +20,9 @@ RUN apt-get update \
  && apt-get install -y curl git jq tmux zsh sudo ca-certificates docker.io docker-compose-plugin tree ripgrep fzf fd-find bat luarocks \
  && rm -rf /var/lib/apt/lists/*
 
-
-RUN if getent group ${HOST_GID} >/dev/null; then \
-      groupname=$(getent group ${HOST_GID} | cut -d: -f1); \
-      useradd -m -u ${HOST_UID} -g ${HOST_GID} -s /usr/bin/zsh dev; \
-    else \
-      groupadd -g ${HOST_GID} dev && \
-      useradd -m -u ${HOST_UID} -g ${HOST_GID} -s /usr/bin/zsh dev; \
-    fi \
- && echo "dev ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/dev
-
-RUN usermod -aG docker dev
+RUN groupadd -g ${HOST_GID} dev && \
+    useradd -m -u ${HOST_UID} -g ${HOST_GID} dev \
+    && echo "dev ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/dev
 
 USER dev
 
@@ -54,8 +46,7 @@ RUN curl -s "https://get.sdkman.io?ci=true&rcupdate=false" | bash
 
 RUN zsh -c "source .sdkman/bin/sdkman-init.sh \
       && sdk version \
-      && sdk install java 21.0.8-tem \
-      && sdk install quarkus"
+      && sdk install java 21.0.8-tem"
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
@@ -64,7 +55,9 @@ RUN zsh -c '\. "$HOME/.nvm/nvm.sh" \
     && node -v \ 
     && npm -v'
 
-RUN zsh -c 'source ~/.zshrc && nvim --headless "+Lazy! install" +qa'
+RUN zsh -c "source ~/.zshrc && nvim --headless '+Lazy! install' \
+    '+lua require(\"lazy\").load({ plugins = { \"nvim-treesitter\" } }); require(\"nvim-treesitter.install\").update({ with_sync = true })()' \
+    '+Lazy! build' +qa"
 
 SHELL ["/usr/bin/zsh", "-lc"]
 

@@ -118,3 +118,15 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 \. "$HOME/.nvm/nvm.sh"
 
+
+SOCKET_PATH="/var/run/docker.sock"
+
+# Check if the socket exists
+if [[ -e "$SOCKET_PATH" ]]; then
+  echo "Found $SOCKET_PATH"
+  sudo chown dev:root $SOCKET_PATH
+  echo "Ownership changed successfully ✅"
+else
+  echo "$SOCKET_PATH not found. Nothing to do."
+fi
+
