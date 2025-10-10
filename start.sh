@@ -13,6 +13,7 @@ build)
   ;;
 "")
   echo "💻 Attaching to container shell..."
+  HOST_UID=$HOST_UID HOST_GID=$HOST_GID docker compose up -d
   HOST_UID=$HOST_UID HOST_GID=$HOST_GID docker compose exec dev zsh
   ;;
 *)

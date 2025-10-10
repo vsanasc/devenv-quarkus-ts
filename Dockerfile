@@ -21,8 +21,6 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 
-
-
 RUN if getent group ${HOST_GID} >/dev/null; then \
       groupname=$(getent group ${HOST_GID} | cut -d: -f1); \
       useradd -m -u ${HOST_UID} -g ${HOST_GID} -s /usr/bin/zsh dev; \
@@ -50,17 +48,23 @@ ADD ./nvim .config/nvim
 
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-RUN curl -s "https://get.sdkman.io?ci=true&rcupdate=false" | bash \
-    && bash -c "source .sdkman/bin/sdkman-init.sh && sdk version" \
-    && sdk install kotlin \
-    && sdk install java \
-    && sdk install quarkus
+RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash \
-    && \. "$HOME/.nvm/nvm.sh" \
+RUN curl -s "https://get.sdkman.io?ci=true&rcupdate=false" | bash
+
+RUN zsh -c "source .sdkman/bin/sdkman-init.sh \
+      && sdk version \
+      && sdk install java 21.0.8-tem \
+      && sdk install quarkus"
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+RUN zsh -c '\. "$HOME/.nvm/nvm.sh" \
     && nvm install 22 \
     && node -v \ 
-    && npm -v
+    && npm -v'
+
+RUN zsh -c 'source ~/.zshrc && nvim --headless "+Lazy! install" +qa'
 
 SHELL ["/usr/bin/zsh", "-lc"]
 

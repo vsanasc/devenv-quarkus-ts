@@ -114,3 +114,7 @@ alias bat="batcat"
 
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+\. "$HOME/.nvm/nvm.sh"
+
