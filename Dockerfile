@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     > /etc/apt/sources.list.d/docker.list
 
 RUN apt-get update \
-  && apt-get install -y git jq tmux zsh sudo ca-certificates docker.io docker-compose-plugin tree ripgrep fzf fd-find bat luarocks \
+  && apt-get install -y vim git jq tmux zsh sudo ca-certificates docker.io docker-compose-plugin tree ripgrep fzf fd-find bat luarocks \
   && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g ${HOST_GID} dev && \
