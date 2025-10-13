@@ -13,8 +13,17 @@ services:
     volumes:
       - ./workspace:/home/dev/workspace
       - /var/run/docker.sock:/var/run/docker.sock
+
       - $HOME/.m2:/home/dev/.m2
       - $HOME/.ssh:/home/dev/.ssh
+      - $HOME/.config/k9s:/home/dev/.config/k9s
+      - $HOME/.local/share/k9s:/home/dev/.local/share/k9s
+      - $HOME/.aws:/home/dev/.aws
+      - $HOME/.kube:/home/dev/.kube
+    environment:
+      - AWS_CONFIG_FILE=/home/dev/.aws/config
+      - AWS_SHARED_CREDENTIALS_FILE=/home/dev/.aws/credentials
+      - KUBECONFIG=/home/dev/.kube/config
     working_dir: /home/dev
     stdin_open: true
     tty: true
