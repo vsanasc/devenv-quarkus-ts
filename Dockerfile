@@ -4,21 +4,16 @@ ARG HOST_UID=1000
 ARG HOST_GID=1000
 
 RUN apt-get update && apt-get install -y \
-    ca-certificates curl gnupg lsb-release \
+    ca-certificates curl gnupg lsb-release build-essential \
  && install -m 0755 -d /etc/apt/keyrings \
  && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc \
  && chmod a+r /etc/apt/keyrings/docker.asc \
  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo $VERSION_CODENAME) stable" \
     > /etc/apt/sources.list.d/docker.list
 
-RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz \
-    && rm -rf /opt/nvim-linux-x86_64 \
-    && tar -C /opt -xzf nvim-linux-x86_64.tar.gz \
-    && rm -rf nvim-linux-x86_64.tar.gz
-
 RUN apt-get update \
- && apt-get install -y curl git jq tmux zsh sudo ca-certificates docker.io docker-compose-plugin tree ripgrep fzf fd-find bat luarocks \
- && rm -rf /var/lib/apt/lists/*
+  && apt-get install -y git jq tmux zsh sudo ca-certificates docker.io docker-compose-plugin tree ripgrep fzf fd-find bat luarocks \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g ${HOST_GID} dev && \
     useradd -m -u ${HOST_UID} -g ${HOST_GID} dev \
@@ -29,6 +24,8 @@ USER dev
 WORKDIR /home/dev
 
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
+
+RUN NONINTERACTIVE=1 CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 RUN mkdir -p .config/nvim
 
@@ -54,6 +51,8 @@ RUN zsh -c '\. "$HOME/.nvm/nvm.sh" \
     && nvm install 22 \
     && node -v \ 
     && npm -v'
+
+RUN zsh -c "source ~/.zshrc && brew install nvim kubectl k9s"
 
 RUN zsh -c "source ~/.zshrc && nvim --headless '+Lazy! install' \
     '+lua require(\"lazy\").load({ plugins = { \"nvim-treesitter\" } }); require(\"nvim-treesitter.install\").update({ with_sync = true })()' \

@@ -112,12 +112,13 @@ export LANG=en_US.UTF-8
 # Aliases
 alias bat="batcat"
 
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+# export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 \. "$HOME/.nvm/nvm.sh"
 
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 SOCKET_PATH="/var/run/docker.sock"
 
