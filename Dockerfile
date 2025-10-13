@@ -4,7 +4,7 @@ ARG HOST_UID=1000
 ARG HOST_GID=1000
 
 RUN apt-get update && apt-get install -y \
-    ca-certificates curl gnupg lsb-release build-essential \
+    ca-certificates curl gnupg lsb-release build-essential procps \
  && install -m 0755 -d /etc/apt/keyrings \
  && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc \
  && chmod a+r /etc/apt/keyrings/docker.asc \
@@ -52,7 +52,7 @@ RUN zsh -c '\. "$HOME/.nvm/nvm.sh" \
     && node -v \ 
     && npm -v'
 
-RUN zsh -c "source ~/.zshrc && brew install nvim kubectl k9s"
+RUN zsh -c "source ~/.zshrc && brew install nvim kubectl k9s awscli"
 
 RUN zsh -c "source ~/.zshrc && nvim --headless '+Lazy! install' \
     '+lua require(\"lazy\").load({ plugins = { \"nvim-treesitter\" } }); require(\"nvim-treesitter.install\").update({ with_sync = true })()' \
