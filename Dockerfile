@@ -52,7 +52,7 @@ RUN zsh -c '\. "$HOME/.nvm/nvm.sh" \
     && node -v \ 
     && npm -v'
 
-RUN zsh -c "source ~/.zshrc && brew install nvim kubectl k9s awscli"
+RUN zsh -c "source ~/.zshrc && brew install nvim awscli lazygit lazydocker"
 
 RUN zsh -c "source ~/.zshrc && nvim --headless '+Lazy! install' \
     '+lua require(\"lazy\").load({ plugins = { \"nvim-treesitter\" } }); require(\"nvim-treesitter.install\").update({ with_sync = true })()' \

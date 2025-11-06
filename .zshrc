@@ -112,7 +112,7 @@ export LANG=en_US.UTF-8
 # Aliases
 alias bat="batcat"
 
-# export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+[ -z "$TMUX" ] && export TERM="xterm-256color"
 
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
@@ -124,10 +124,6 @@ SOCKET_PATH="/var/run/docker.sock"
 
 # Check if the socket exists
 if [[ -e "$SOCKET_PATH" ]]; then
-  echo "Found $SOCKET_PATH"
-  sudo chown dev:root $SOCKET_PATH
-  echo "Ownership changed successfully ✅"
-else
-  echo "$SOCKET_PATH not found. Nothing to do."
+  sudo chown dev:root $SOCKET_PATH # Fix docker permission
 fi
 

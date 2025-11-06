@@ -11,6 +11,10 @@ return {
         },
       },
       picker = {
+        files = {
+          hidden = true,
+          ignored = true,
+        },
         sources = {
           explorer = {
             auto_close = true,
