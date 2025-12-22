@@ -8,7 +8,6 @@ services:
       args:
         HOST_UID: ${HOST_UID}
         HOST_GID: ${HOST_GID}
-    container_name: dev
     network_mode: "host"
     volumes:
       - ./workspace:/home/dev/workspace
