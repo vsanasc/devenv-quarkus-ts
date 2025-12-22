@@ -17,9 +17,16 @@ services:
       - $HOME/.m2:/home/dev/.m2
       - $HOME/.ssh:/home/dev/.ssh
       - $HOME/.config/k9s:/home/dev/.config/k9s
+      - $HOME/.config/tmux:/home/dev/.config/tmux
       - $HOME/.local/share/k9s:/home/dev/.local/share/k9s
       - $HOME/.aws:/home/dev/.aws
       - $HOME/.kube:/home/dev/.kube
+
+        # Backup
+      - .config:/home/dev/.config
+      - .tmux:/home/dev/.tmux
+      - .tmux.conf:/home/dev/.tmux.conf
+
     environment:
       - AWS_CONFIG_FILE=/home/dev/.aws/config
       - AWS_SHARED_CREDENTIALS_FILE=/home/dev/.aws/credentials

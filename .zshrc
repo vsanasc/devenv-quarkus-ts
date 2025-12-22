@@ -111,6 +111,7 @@ export LANG=en_US.UTF-8
 
 # Aliases
 alias bat="batcat"
+alias reset="clear && print '\e[3J'"
 
 [ -z "$TMUX" ] && export TERM="xterm-256color"
 
